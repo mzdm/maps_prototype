@@ -22,7 +22,7 @@ class _$HealthcareProviderTearOff {
   const _$HealthcareProviderTearOff();
 
   _HealthcareProvider call(
-      {required String MistoPoskytovaniId,
+      {String? MistoPoskytovaniId,
       required String ZdravotnickeZarizeniId,
       String? Kod,
       String? NazevZarizeni,
@@ -100,7 +100,7 @@ const $HealthcareProvider = _$HealthcareProviderTearOff();
 
 /// @nodoc
 mixin _$HealthcareProvider {
-  String get MistoPoskytovaniId => throw _privateConstructorUsedError;
+  String? get MistoPoskytovaniId => throw _privateConstructorUsedError;
   String get ZdravotnickeZarizeniId => throw _privateConstructorUsedError;
   String? get Kod => throw _privateConstructorUsedError;
   String? get NazevZarizeni => throw _privateConstructorUsedError;
@@ -145,7 +145,7 @@ abstract class $HealthcareProviderCopyWith<$Res> {
           HealthcareProvider value, $Res Function(HealthcareProvider) then) =
       _$HealthcareProviderCopyWithImpl<$Res>;
   $Res call(
-      {String MistoPoskytovaniId,
+      {String? MistoPoskytovaniId,
       String ZdravotnickeZarizeniId,
       String? Kod,
       String? NazevZarizeni,
@@ -227,7 +227,7 @@ class _$HealthcareProviderCopyWithImpl<$Res>
       MistoPoskytovaniId: MistoPoskytovaniId == freezed
           ? _value.MistoPoskytovaniId
           : MistoPoskytovaniId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       ZdravotnickeZarizeniId: ZdravotnickeZarizeniId == freezed
           ? _value.ZdravotnickeZarizeniId
           : ZdravotnickeZarizeniId // ignore: cast_nullable_to_non_nullable
@@ -364,7 +364,7 @@ abstract class _$HealthcareProviderCopyWith<$Res>
       __$HealthcareProviderCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String MistoPoskytovaniId,
+      {String? MistoPoskytovaniId,
       String ZdravotnickeZarizeniId,
       String? Kod,
       String? NazevZarizeni,
@@ -448,7 +448,7 @@ class __$HealthcareProviderCopyWithImpl<$Res>
       MistoPoskytovaniId: MistoPoskytovaniId == freezed
           ? _value.MistoPoskytovaniId
           : MistoPoskytovaniId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       ZdravotnickeZarizeniId: ZdravotnickeZarizeniId == freezed
           ? _value.ZdravotnickeZarizeniId
           : ZdravotnickeZarizeniId // ignore: cast_nullable_to_non_nullable
@@ -581,7 +581,7 @@ class __$HealthcareProviderCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_HealthcareProvider implements _HealthcareProvider {
   const _$_HealthcareProvider(
-      {required this.MistoPoskytovaniId,
+      {this.MistoPoskytovaniId,
       required this.ZdravotnickeZarizeniId,
       this.Kod,
       this.NazevZarizeni,
@@ -618,7 +618,7 @@ class _$_HealthcareProvider implements _HealthcareProvider {
       _$$_HealthcareProviderFromJson(json);
 
   @override
-  final String MistoPoskytovaniId;
+  final String? MistoPoskytovaniId;
   @override
   final String ZdravotnickeZarizeniId;
   @override
@@ -816,7 +816,7 @@ class _$_HealthcareProvider implements _HealthcareProvider {
 
 abstract class _HealthcareProvider implements HealthcareProvider {
   const factory _HealthcareProvider(
-      {required String MistoPoskytovaniId,
+      {String? MistoPoskytovaniId,
       required String ZdravotnickeZarizeniId,
       String? Kod,
       String? NazevZarizeni,
@@ -853,7 +853,7 @@ abstract class _HealthcareProvider implements HealthcareProvider {
       _$_HealthcareProvider.fromJson;
 
   @override
-  String get MistoPoskytovaniId => throw _privateConstructorUsedError;
+  String? get MistoPoskytovaniId => throw _privateConstructorUsedError;
   @override
   String get ZdravotnickeZarizeniId => throw _privateConstructorUsedError;
   @override

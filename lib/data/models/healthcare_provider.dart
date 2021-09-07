@@ -7,7 +7,7 @@ part 'healthcare_provider.g.dart';
 @freezed
 class HealthcareProvider with _$HealthcareProvider {
   const factory HealthcareProvider({
-    required String MistoPoskytovaniId,
+    String? MistoPoskytovaniId,
     required String ZdravotnickeZarizeniId,
     String? Kod,
     String? NazevZarizeni,

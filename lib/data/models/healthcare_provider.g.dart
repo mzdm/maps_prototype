@@ -9,7 +9,7 @@ part of 'healthcare_provider.dart';
 _$_HealthcareProvider _$$_HealthcareProviderFromJson(
         Map<String, dynamic> json) =>
     _$_HealthcareProvider(
-      MistoPoskytovaniId: json['MistoPoskytovaniId'] as String,
+      MistoPoskytovaniId: json['MistoPoskytovaniId'] as String?,
       ZdravotnickeZarizeniId: json['ZdravotnickeZarizeniId'] as String,
       Kod: json['Kod'] as String?,
       NazevZarizeni: json['NazevZarizeni'] as String?,

@@ -1,27 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:maps_prototype/data/models/healthcare_provider.dart';
+import 'package:maps_prototype/data/models/specialization.dart';
 
-// TODO: Filter doctors by specialization
 class MapStateService with ChangeNotifier {
-  List<HealthcareProvider> healthcareProviders = <HealthcareProvider>[];
+  final List<HealthcareProvider> _healthcareProviders = <HealthcareProvider>[];
+
+  Specialization currSpecialization = specializations.first;
+
+  List<HealthcareProvider> get healthcareProviders {
+    if (currSpecialization.categoryName == 'Všechny') return _healthcareProviders;
+    return _healthcareProviders
+        .where((healthcareProvider) => specializations
+            .firstWhere((e) => e.categoryName == currSpecialization.categoryName)
+            .specializations
+            .contains(healthcareProvider.OborPece))
+        .toList();
+  }
+
+  void setSpecialization(Specialization specialization) {
+    if (currSpecialization != specialization) {
+      currSpecialization = specialization;
+      notifyListeners();
+    }
+  }
 
   void add(HealthcareProvider healthcareProvider) {
-    healthcareProviders.add(healthcareProvider);
+    _healthcareProviders.add(healthcareProvider);
     notifyListeners();
   }
 
   void addAll(List<HealthcareProvider> healthcareProviders) {
-    this.healthcareProviders.addAll(healthcareProviders);
+    _healthcareProviders.addAll(healthcareProviders);
     notifyListeners();
   }
 
   void remove(HealthcareProvider healthcareProvider) {
-    healthcareProviders.remove(healthcareProvider);
+    _healthcareProviders.remove(healthcareProvider);
     notifyListeners();
   }
 
   void removeAll() {
-    healthcareProviders.clear();
+    _healthcareProviders.clear();
     notifyListeners();
   }
 }

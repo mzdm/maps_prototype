@@ -24,11 +24,7 @@ class HomeScreen extends StatelessWidget {
           ),
           ChangeNotifierProvider<MapStateService>(create: (_) => MapStateService(), lazy: false),
         ],
-        child: Scaffold(
-          body: SafeArea(
-            child: const FindDoctorScreen(),
-          ),
-        ),
+        child: FindDoctorScreen(),
       ),
       bottomNavigationBar: SizedBox(
         height: MediaQuery.of(context).size.height * 0.1,
