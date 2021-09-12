@@ -28,8 +28,8 @@ class HealthcareProviderLocalDataSource implements HealthcareProviderDataSource 
             PoskytovatelTelefon: e[14].toString(),
             PoskytovatelEmail: e[16].toString(),
             OborPece: e[27].toString(),
-            Lat: e[31]?.toString(),
-            Lng: e[32]?.toString(),
+            Lat: e[31] == null ? null : double.tryParse(e[31].toString()),
+            Lng: e[32] == null ? null : double.tryParse(e[32].toString()),
           ),
         )
         .toList();

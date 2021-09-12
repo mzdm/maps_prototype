@@ -52,8 +52,8 @@ class _$HealthcareProviderTearOff {
       String? OborPece,
       String? FormaPece,
       String? DruhPece,
-      String? Lat,
-      String? Lng}) {
+      double? Lat,
+      double? Lng}) {
     return _HealthcareProvider(
       MistoPoskytovaniId: MistoPoskytovaniId,
       ZdravotnickeZarizeniId: ZdravotnickeZarizeniId,
@@ -130,8 +130,8 @@ mixin _$HealthcareProvider {
   String? get OborPece => throw _privateConstructorUsedError;
   String? get FormaPece => throw _privateConstructorUsedError;
   String? get DruhPece => throw _privateConstructorUsedError;
-  String? get Lat => throw _privateConstructorUsedError;
-  String? get Lng => throw _privateConstructorUsedError;
+  double? get Lat => throw _privateConstructorUsedError;
+  double? get Lng => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -175,8 +175,8 @@ abstract class $HealthcareProviderCopyWith<$Res> {
       String? OborPece,
       String? FormaPece,
       String? DruhPece,
-      String? Lat,
-      String? Lng});
+      double? Lat,
+      double? Lng});
 }
 
 /// @nodoc
@@ -347,11 +347,11 @@ class _$HealthcareProviderCopyWithImpl<$Res>
       Lat: Lat == freezed
           ? _value.Lat
           : Lat // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       Lng: Lng == freezed
           ? _value.Lng
           : Lng // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -394,8 +394,8 @@ abstract class _$HealthcareProviderCopyWith<$Res>
       String? OborPece,
       String? FormaPece,
       String? DruhPece,
-      String? Lat,
-      String? Lng});
+      double? Lat,
+      double? Lng});
 }
 
 /// @nodoc
@@ -568,11 +568,11 @@ class __$HealthcareProviderCopyWithImpl<$Res>
       Lat: Lat == freezed
           ? _value.Lat
           : Lat // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       Lng: Lng == freezed
           ? _value.Lng
           : Lng // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -678,9 +678,9 @@ class _$_HealthcareProvider implements _HealthcareProvider {
   @override
   final String? DruhPece;
   @override
-  final String? Lat;
+  final double? Lat;
   @override
-  final String? Lng;
+  final double? Lng;
 
   @override
   String toString() {
@@ -846,8 +846,8 @@ abstract class _HealthcareProvider implements HealthcareProvider {
       String? OborPece,
       String? FormaPece,
       String? DruhPece,
-      String? Lat,
-      String? Lng}) = _$_HealthcareProvider;
+      double? Lat,
+      double? Lng}) = _$_HealthcareProvider;
 
   factory _HealthcareProvider.fromJson(Map<String, dynamic> json) =
       _$_HealthcareProvider.fromJson;
@@ -913,9 +913,9 @@ abstract class _HealthcareProvider implements HealthcareProvider {
   @override
   String? get DruhPece => throw _privateConstructorUsedError;
   @override
-  String? get Lat => throw _privateConstructorUsedError;
+  double? get Lat => throw _privateConstructorUsedError;
   @override
-  String? get Lng => throw _privateConstructorUsedError;
+  double? get Lng => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HealthcareProviderCopyWith<_HealthcareProvider> get copyWith =>

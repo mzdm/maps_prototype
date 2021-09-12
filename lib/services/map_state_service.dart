@@ -18,27 +18,23 @@ class MapStateService with ChangeNotifier {
     _visibleHealthcareProviders
       ..clear()
       ..addAll(
-        _allHealthcareProviders
-            .where(
-              (healthcareProvider) {
-                if (currSpecialization.categoryName == 'Všechny') return true;
-                return specializations
-                    .firstWhere((e) => e.categoryName == currSpecialization.categoryName)
-                    .specializations
-                    .contains(healthcareProvider.OborPece);
-              },
-            )
-            .where(
-              (healthcareProvider) =>
-                  visibleRegion == null ||
-                  visibleRegion!.contains(
-                    LatLng(
-                      double.tryParse(healthcareProvider.Lat ?? '0.0') ?? 0.0,
-                      double.tryParse(healthcareProvider.Lng ?? '0.0') ?? 0.0,
-                    ),
-                  ),
-            )
-            .toList(),
+        _allHealthcareProviders.where(
+          (healthcareProvider) {
+            if (currSpecialization.categoryName == 'Všechny') return true;
+            return specializations
+                .firstWhere((e) => e.categoryName == currSpecialization.categoryName)
+                .specializations
+                .contains(healthcareProvider.OborPece);
+          },
+        ).where(
+          (healthcareProvider) {
+            final lat = healthcareProvider.Lat;
+            final lng = healthcareProvider.Lng;
+            if (lat == null || lng == null) return false;
+            if (visibleRegion == null) return true;
+            return visibleRegion!.contains(LatLng(lat, lng));
+          },
+        ).toList(),
       );
   }
 

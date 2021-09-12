@@ -51,34 +51,26 @@ class _MapPreviewState extends State<MapPreview> {
   }
 
   Set<Marker> createMarkers({required List<HealthcareProvider> healthcareProviders}) {
-    print(healthcareProviders.length);
     final markers = <Marker>{};
     for (final healthcareProvider in healthcareProviders) {
-      if (healthcareProvider.Lat != null && healthcareProvider.Lng != null) {
-        final lat = double.tryParse(healthcareProvider.Lat!);
-        final lng = double.tryParse(healthcareProvider.Lng!);
-
-        if (lat != null && lng != null) {
-          markers.add(
-            Marker(
-              markerId: MarkerId(healthcareProvider.ZdravotnickeZarizeniId),
-              position: LatLng(lat, lng),
-              onTap: () {
-                // TODO: doc detail
-              },
-              // TODO: custom Marker icon
-              // icon: ,
-              infoWindow: InfoWindow(
-                title: 'ZdravotnickeZarizeniId: ${healthcareProvider.ZdravotnickeZarizeniId}',
-                snippet: 'NazevZarizeni: ${healthcareProvider.NazevZarizeni}',
-                onTap: () async {
-                  await showDocDetailDialog(healthcareProvider);
-                },
-              ),
-            ),
-          );
-        }
-      }
+      markers.add(
+        Marker(
+          markerId: MarkerId(healthcareProvider.ZdravotnickeZarizeniId),
+          position: LatLng(healthcareProvider.Lat!, healthcareProvider.Lng!),
+          onTap: () {
+            // TODO: doc detail
+          },
+          // TODO: custom Marker icon
+          // icon: ,
+          infoWindow: InfoWindow(
+            title: 'ZdravotnickeZarizeniId: ${healthcareProvider.ZdravotnickeZarizeniId}',
+            snippet: 'NazevZarizeni: ${healthcareProvider.NazevZarizeni}',
+            onTap: () async {
+              await showDocDetailDialog(healthcareProvider);
+            },
+          ),
+        ),
+      );
     }
     return markers;
   }

@@ -40,8 +40,8 @@ _$_HealthcareProvider _$$_HealthcareProviderFromJson(
       OborPece: json['OborPece'] as String?,
       FormaPece: json['FormaPece'] as String?,
       DruhPece: json['DruhPece'] as String?,
-      Lat: json['Lat'] as String?,
-      Lng: json['Lng'] as String?,
+      Lat: (json['Lat'] as num?)?.toDouble(),
+      Lng: (json['Lng'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$_HealthcareProviderToJson(

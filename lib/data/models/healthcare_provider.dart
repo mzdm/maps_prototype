@@ -37,8 +37,8 @@ class HealthcareProvider with _$HealthcareProvider {
     String? OborPece,
     String? FormaPece,
     String? DruhPece,
-    String? Lat,
-    String? Lng,
+    double? Lat,
+    double? Lng,
   }) = _HealthcareProvider;
 
   factory HealthcareProvider.fromJson(Map<String, dynamic> json) =>
