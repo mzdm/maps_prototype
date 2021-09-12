@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_prototype/constants.dart';
 import 'package:maps_prototype/data/models/healthcare_provider.dart';
@@ -28,6 +29,7 @@ class _MapPreviewState extends State<MapPreview> {
   @override
   void initState() {
     super.initState();
+    // _determinePosition();
     mapStateService = context.read<MapStateService>();
   }
 
@@ -43,24 +45,13 @@ class _MapPreviewState extends State<MapPreview> {
   //   });
   // }
 
-  // static const CameraPosition _kMovePos = CameraPosition(
-  //   bearing: 192.8334901395799,
-  //   target: LatLng(50.1058258468836, 14.49318803997208),
-  //   zoom: 19.151926040649414,
-  // );
+  Future<void> animateToPos(CameraPosition cameraPosition) async {
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
 
-  // Future<void> _goToTheLake() async {
-  //   final GoogleMapController controller = await mapController.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(_kMovePos));
-  // }
-
-  Set<Marker> createMarkers({
-    required List<HealthcareProvider> healthcareProviders,
-  }) {
-    if (healthcareProviders.isEmpty) {
-      return {};
-    }
-
+  Set<Marker> createMarkers({required List<HealthcareProvider> healthcareProviders}) {
+    print(healthcareProviders.length);
     final markers = <Marker>{};
     for (final healthcareProvider in healthcareProviders) {
       if (healthcareProvider.Lat != null && healthcareProvider.Lng != null) {
@@ -73,7 +64,7 @@ class _MapPreviewState extends State<MapPreview> {
               markerId: MarkerId(healthcareProvider.ZdravotnickeZarizeniId),
               position: LatLng(lat, lng),
               onTap: () {
-                // context.read<MapStateService>().remove(healthcareProvider);
+                // TODO: doc detail
               },
               // TODO: custom Marker icon
               // icon: ,
@@ -81,34 +72,7 @@ class _MapPreviewState extends State<MapPreview> {
                 title: 'ZdravotnickeZarizeniId: ${healthcareProvider.ZdravotnickeZarizeniId}',
                 snippet: 'NazevZarizeni: ${healthcareProvider.NazevZarizeni}',
                 onTap: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text(
-                                  'ZdravotnickeZarizeniId: ${healthcareProvider.ZdravotnickeZarizeniId}'),
-                              Text('NazevZarizeni: ${healthcareProvider.NazevZarizeni}'),
-                              Text(
-                                  'Adresa: ${healthcareProvider.Obec} ${healthcareProvider.Ulice} ${healthcareProvider.CisloDomovniOrientacni}'),
-                              Text('OborPece: ${healthcareProvider.OborPece}'),
-                              Text('PoskytovatelEmail: ${healthcareProvider.PoskytovatelEmail}'),
-                              Text(
-                                  'PoskytovatelTelefon: ${healthcareProvider.PoskytovatelTelefon}'),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Zavřít'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  await showDocDetailDialog(healthcareProvider);
                 },
               ),
             ),
@@ -127,55 +91,139 @@ class _MapPreviewState extends State<MapPreview> {
           body: GoogleMap(
             initialCameraPosition: initialCameraPos,
             myLocationEnabled: true,
-            zoomControlsEnabled: true,
-            onMapCreated: (GoogleMapController controller) {
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            onMapCreated: (GoogleMapController controller) async {
               mapController.complete(controller);
+              final latLngBounds = await controller.getVisibleRegion();
+              mapStateService.setVisibleRegion(latLngBounds);
             },
-            markers: createMarkers(
-              healthcareProviders: value.healthcareProviders,
-            ),
+            onCameraIdle: () async {
+              final GoogleMapController controller = await mapController.future;
+              final latLngBounds = await controller.getVisibleRegion();
+              mapStateService.setVisibleRegion(latLngBounds);
+            },
+            markers: createMarkers(healthcareProviders: value.healthcareProviders),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: FloatingActionButton(
-              onPressed: () async {
-                await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: SingleChildScrollView(
-                        child: Column(
-                          children: specializations
-                              .map(
-                                (specialization) => RadioListTile<Specialization>(
-                                  title: Text(specialization.categoryName),
-                                  value: specialization,
-                                  groupValue: value.currSpecialization,
-                                  onChanged: (Specialization? value) {
-                                    if (value != null) mapStateService.setSpecialization(value);
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Zavřít'),
-                        ),
-                      ],
-                    );
+            padding:
+                EdgeInsets.fromLTRB(10.0, 10.0, 10.0, MediaQuery.of(context).size.height * 0.5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FloatingActionButton(
+                  onPressed: () async {
+                    await showFilterDialogMenu(context);
                   },
-                );
-              },
-              backgroundColor: Colors.white,
-              child: const Icon(Icons.filter_alt, color: Colors.black87),
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.filter_alt, color: Colors.black87),
+                ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    final currentPos = await _determinePosition();
+                    final latLng = LatLng(currentPos.latitude, currentPos.longitude);
+                    await animateToPos(CameraPosition(target: latLng, zoom: 17.0));
+                  },
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.my_location, color: Colors.black87),
+                ),
+              ],
             ),
           ),
         );
       },
     );
   }
+
+  Future<dynamic> showDocDetailDialog(HealthcareProvider healthcareProvider) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('ZdravotnickeZarizeniId:\n${healthcareProvider.ZdravotnickeZarizeniId}\n'),
+                Text('NazevZarizeni:\n${healthcareProvider.NazevZarizeni}\n'),
+                Text(
+                    'Adresa:\n${healthcareProvider.Obec} ${healthcareProvider.Ulice} ${healthcareProvider.CisloDomovniOrientacni}\n'),
+                Text('OborPece:\n${healthcareProvider.OborPece}\n'),
+                Text('PoskytovatelEmail:\n${healthcareProvider.PoskytovatelEmail}\n'),
+                Text('PoskytovatelTelefon:\n${healthcareProvider.PoskytovatelTelefon}\n'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Zavřít'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<dynamic> showFilterDialogMenu(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: StatefulBuilder(builder: (context, setState) {
+            return SingleChildScrollView(
+              child: Column(
+                children: specializations
+                    .map(
+                      (specialization) => RadioListTile<Specialization>(
+                        title: Text(specialization.categoryName),
+                        value: specialization,
+                        groupValue: mapStateService.currSpecialization,
+                        onChanged: (Specialization? value) {
+                          if (value != null) {
+                            setState(() => mapStateService.setSpecialization(value));
+                          }
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          }),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Zavřít'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  return Geolocator.getCurrentPosition();
 }

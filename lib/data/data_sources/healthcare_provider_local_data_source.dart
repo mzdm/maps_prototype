@@ -4,7 +4,6 @@ import 'package:maps_prototype/constants.dart';
 import 'package:maps_prototype/data/data_sources/healthcare_provider_data_source.dart';
 import 'package:maps_prototype/data/models/healthcare_provider.dart';
 
-// TODO: Find by GPS coords
 class HealthcareProviderLocalDataSource implements HealthcareProviderDataSource {
   const HealthcareProviderLocalDataSource();
 
@@ -15,7 +14,7 @@ class HealthcareProviderLocalDataSource implements HealthcareProviderDataSource 
     List<List<dynamic>> listOfValues = const CsvToListConverter().convert(input);
     return listOfValues
         .skip(1)
-        .take(1000)
+        // .take(1000)
         .map(
           (e) => HealthcareProvider(
             MistoPoskytovaniId: e[0].toString(),

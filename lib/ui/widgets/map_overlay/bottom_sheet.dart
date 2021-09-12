@@ -12,7 +12,7 @@ class SheetMapOverlay extends StatelessWidget {
     return Consumer<MapStateService>(
       builder: (context, value, child) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.3,
+          initialChildSize: 0.4,
           maxChildSize: 0.75,
           minChildSize: 0.05,
           builder: (context, scrollController) {
@@ -20,7 +20,7 @@ class SheetMapOverlay extends StatelessWidget {
               color: Color.fromRGBO(190, 88, 23, 1),
               child: ListView.builder(
                 controller: scrollController,
-                itemCount: 30,
+                itemCount: value.healthcareProviders.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Column(
@@ -45,7 +45,7 @@ class SheetMapOverlay extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'nalezených doktorů: ${value.healthcareProviders.length}',
+                                  'doktorů v okolí: ${value.healthcareProviders.length}',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
